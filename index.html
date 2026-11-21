@@ -21,7 +21,7 @@ svg text.o,svg text.a,svg text.h{stroke:none}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 button{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:10px 4px 10px 6px;padding:2px 14px;cursor:pointer;line-height:1.5}
 button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--hyp);outline-offset:2px}
-button.on{background:var(--hl);color:#2b2b3a}
+button.on{background:var(--hl);color:var(--tx)}
 input[type=range]{width:100%;accent-color:var(--ink);margin:6px 0}
 b{color:var(--ink)}
 .six{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;text-align:center}
@@ -30,7 +30,7 @@ table{border-collapse:collapse;width:100%;text-align:center}
 td,th{border:2px solid var(--ink);padding:0}
 th{color:var(--ink)}
 td button{width:100%;border:0;border-radius:0;background:transparent;padding:4px 2px;color:var(--ink)}
-td button.q{background:var(--hl);color:#2b2b3a}
+td button.q{background:var(--hl);color:var(--tx)}
 .pf li{opacity:0;max-height:0;overflow:hidden;transition:.3s}
 .pf li.s{opacity:1;max-height:90px}
 .pf{list-style:none;padding:0;margin:8px 0}
@@ -39,8 +39,8 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:14px}
 .notes p{background:var(--note);color:var(--nt);padding:10px 12px;margin:0;line-height:26px;box-shadow:2px 3px 0 rgba(0,0,0,.18);transform:rotate(-1.5deg)}
 .notes p:nth-child(even){transform:rotate(1.4deg)}
-.row{display:flex;justify-content:space-between;gap:12px}
-@media(max-width:520px){body{font-size:18px}main{padding-left:50px}h1{font-size:46px}}
+.io{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0}.io label{line-height:24px}input[type=number]{font:inherit;width:100%;box-sizing:border-box;color:var(--tx);background:var(--card);border:2px solid var(--ink);border-radius:8px 4px 8px 5px;padding:2px 8px;margin-top:2px}input[readonly]{background:var(--hl);color:var(--tx);font-weight:bold}
+@media(max-width:520px){body{font-size:18px}main{padding-left:50px}h1{font-size:46px}.io{grid-template-columns:1fr}}
 </style></head><body><main>
 <h1>Trigonometry, made easy</h1>
 <p>Class 10 SSC notes. Drag the sliders, tap the buttons: every diagram is live, so you can <i>see</i> why each formula works.</p>
@@ -55,7 +55,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 <path id="ar" fill="none" stroke="var(--ink)" stroke-width="2.5"/><path id="rt" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
 <text id="la" class="a" text-anchor="middle">adjacent</text><text id="lo" class="o">opposite</text><text id="lh" class="h" text-anchor="middle">hypotenuse</text><text id="lt">θ</text>
 </svg>
-<label>Angle θ = <b id="tv">30</b>°<input id="ang" type="range" min="10" max="80" value="30"></label>
+<label>Angle θ = <b id="tv">30</b>°<input id="ang" type="range" min="1" max="89" value="30"></label><label>Or type your own angle (1 to 89): <input id="an" type="number" min="1" max="89" step="any" value="30" inputmode="decimal"></label>
 <p style="margin:0">Tap a ratio to light up the sides it uses (hypotenuse = 10 units):</p>
 <div class="btns" id="rb"><button data-r="sin" class="on">sin</button><button data-r="cos">cos</button><button data-r="tan">tan</button></div>
 <p id="fm" aria-live="polite"></p>
@@ -81,7 +81,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 <div class="btns"><button id="ra">Reveal all</button><button id="rh">Hide all</button></div></div>
 
 <h2>5. Heights and distances, live</h2>
-<p>You stand d metres from a tower and look up. The height above your eye is <b>h = d × tan θ</b>.</p>
+<p>You stand d metres from a tower and look up. The height above your eye is <b>h = d × tan θ</b>. Pick what to find, type the other two values in the boxes (or drag the sliders) and the answer is worked out for you. Any size works, from a 2 m wall to a 500 m hill: the drawing rescales to fit.</p>
 <div class="card">
 <svg viewBox="0 0 300 300" role="img" aria-label="Person looking up at a tower with an angle of elevation">
 <g filter="url(#w)" stroke-linecap="round"><rect id="tw" width="16" fill="var(--hl)" fill-opacity=".4" stroke="var(--ink)" stroke-width="3"/><line x1="4" y1="275" x2="296" y2="275" stroke="var(--ink)" stroke-width="3"/>
@@ -90,8 +90,10 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 <path id="ea" fill="none" stroke="var(--ink)" stroke-width="2.5"/><g id="dg"><line id="dl" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="5 5"/><path id="da" fill="none" stroke="var(--ink)" stroke-width="2.5"/></g></g>
 <text id="et">θ</text><text id="dt" class="o">depression θ</text><text id="dd" class="a" text-anchor="middle"></text><text id="hh2" class="o" text-anchor="end"></text><text x="14" y="292" id="eye" style="font-size:16px">eye level</text>
 </svg>
-<label>Angle of elevation θ = <b id="ev">45</b>°<input id="ea2" type="range" min="15" max="50" value="45"></label>
-<label>Distance d = <b id="dv">20</b> m<input id="ed" type="range" min="10" max="30" value="20"></label>
+<div class="btns" id="fm2" role="group" aria-label="What to find"><span>Find:</span><button data-m="h" class="on">height h</button><button data-m="d">distance d</button><button data-m="a">angle θ</button></div>
+<div class="io"><label>Angle θ (°)<input id="na" type="number" min="1" max="89" step="any" value="45" inputmode="decimal"></label><label>Distance d (m)<input id="nd" type="number" min="0" step="any" value="20" inputmode="decimal"></label><label>Height h (m)<input id="nh" type="number" min="0" step="any" value="20" inputmode="decimal"></label></div>
+<label>Angle slider (1° to 89°)<input id="ea2" type="range" min="1" max="89" value="45"></label>
+<label>Distance slider (1 to 500 m, type bigger values in the box)<input id="ed" type="range" min="1" max="500" value="20"></label>
 <label><input id="dp" type="checkbox"> Show the angle of depression from the top</label>
 <p id="hr" style="margin:6px 0 0" aria-live="polite"></p>
 <p style="margin:0">Elevation from you to the top = depression from the top to you (alternate angles). Both are measured from the <b>horizontal</b>.</p></div>
@@ -114,7 +116,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 const $=i=>document.getElementById(i),R=Math.PI/180;let hl='sin';
 const L=(i,a,b)=>{const e=$(i);e.setAttribute('x1',a[0]);e.setAttribute('y1',a[1]);e.setAttribute('x2',b[0]);e.setAttribute('y2',b[1])};
 const P=(i,x,y)=>{const e=$(i);e.setAttribute('x',x);e.setAttribute('y',y)};
-function tri(){const t=+$('ang').value,A=[30,215],B=[30+200*Math.cos(t*R),215],C=[B[0],215-200*Math.sin(t*R)];$('tv').textContent=t;
+let th=30;function tri(){const t=th,A=[30,215],B=[30+200*Math.cos(t*R),215],C=[B[0],215-200*Math.sin(t*R)];$('tv').textContent=+t.toFixed(2);if(document.activeElement!==$('an'))$('an').value=+t.toFixed(2);
 L('ha',A,B);L('ho',B,C);L('hh',A,C);$('tp').setAttribute('points',[A,B,C].join(' '));
 $('ar').setAttribute('d',`M${A[0]+36} 215A36 36 0 0 0 ${A[0]+36*Math.cos(t*R)} ${215-36*Math.sin(t*R)}`);
 $('rt').setAttribute('d',`M${B[0]-12} 215v-12h12`);
@@ -127,22 +129,31 @@ const on={sin:['ho','hh'],cos:['ha','hh'],tan:['ho','ha']}[hl];
 [['ha','la'],['ho','lo'],['hh','lh']].forEach(([l,x])=>{const u=on.includes(l);$(l).style.opacity=u?1:.25;$(l).style.strokeWidth=u?7:3;$(x).style.opacity=u?1:.3});
 $('six').innerHTML=[['sin',s],['cos',c],['tan',s/c],['cosec',1/s],['sec',1/c],['cot',c/s]].map(x=>`<span>${x[0]} = <b>${x[1].toFixed(2)}</b></span>`).join('');
 $('idn').innerHTML=`sin²θ + cos²θ = ${(s*s).toFixed(2)} + ${(c*c).toFixed(2)} = <b>${(s*s+c*c).toFixed(2)}</b><br>1 + tan²θ = ${(1+s*s/c/c).toFixed(2)} and sec²θ = ${(1/c/c).toFixed(2)}`;
-$('cm').innerHTML=`At θ = ${t}°: sin ${t}° = <b>${s.toFixed(2)}</b> and cos ${90-t}° = <b>${Math.cos((90-t)*R).toFixed(2)}</b>`}
-$('ang').oninput=tri;$('rb').onclick=e=>{if(e.target.dataset.r){hl=e.target.dataset.r;[...$('rb').children].forEach(b=>b.classList.toggle('on',b===e.target));tri()}};
+$('cm').innerHTML=`At θ = ${t}°: sin ${t}° = <b>${s.toFixed(2)}</b> and cos ${+(90-t).toFixed(2)}° = <b>${Math.cos((90-t)*R).toFixed(2)}</b>`}
+$('ang').oninput=()=>{th=+$('ang').value;tri()};$('an').oninput=()=>{const v=+$('an').value;if(v>=1&&v<=89){th=v;$('ang').value=v;tri()}};$('rb').onclick=e=>{if(e.target.dataset.r){hl=e.target.dataset.r;[...$('rb').children].forEach(b=>b.classList.toggle('on',b===e.target));tri()}};
 const V={sin:['0','1/2','1/√2','√3/2','1'],cos:['1','√3/2','1/√2','1/2','0'],tan:['0','1/√3','1','√3','n.d.']};
 $('tb').innerHTML='<tr><th></th>'+[0,30,45,60,90].map(x=>`<th>${x}°</th>`).join('')+'</tr>'+Object.keys(V).map(k=>`<tr><th>${k}</th>`+V[k].map(v=>`<td><button class="q" aria-label="Reveal">?</button><span hidden>${v}</span></td>`).join('')+'</tr>').join('');
 const tg=(b,s)=>{const sp=b.nextElementSibling;b.textContent=s?sp.textContent:'?';b.classList.toggle('q',!s)};
 $('tb').onclick=e=>{if(e.target.tagName=='BUTTON')tg(e.target,e.target.classList.contains('q'))};
 const all=s=>$('tb').querySelectorAll('button').forEach(b=>tg(b,s));$('ra').onclick=()=>all(1);$('rh').onclick=()=>all(0);
-function ht(){const t=+$('ea2').value,d=+$('ed').value,D=d*6,x=40+D,y=250-D*Math.tan(t*R),h=d*Math.tan(t*R);$('ev').textContent=t;$('dv').textContent=d;
-const w=$('tw');w.setAttribute('x',x);w.setAttribute('y',y);w.setAttribute('height',275-y);
+let md='h';const fx=x=>+(+x).toFixed(2),sv=(i,v)=>{const e=$(i);if(document.activeElement!==e)e.value=v};
+function ht(){let t=+$('na').value,d=+$('nd').value,h=+$('nh').value;const r=$('hr');
+$('na').readOnly=md=='a';$('nd').readOnly=md=='d';$('nh').readOnly=md=='h';$('ea2').disabled=md=='a';$('ed').disabled=md=='d';
+if(md=='h'){if(!(t>0&&t<90&&d>0)){r.textContent='Enter an angle between 0° and 90° and a distance above 0.';return}h=d*Math.tan(t*R);sv('nh',fx(h))}
+else if(md=='d'){if(!(t>0&&t<90&&h>0)){r.textContent='Enter an angle between 0° and 90° and a height above 0.';return}d=h/Math.tan(t*R);sv('nd',fx(d))}
+else{if(!(d>0&&h>0)){r.textContent='Enter a distance and a height above 0.';return}t=Math.atan(h/d)/R;sv('na',fx(t))}
+$('ea2').value=Math.min(89,Math.max(1,Math.round(t)));$('ed').value=Math.min(500,Math.max(1,Math.round(d)));
+const s=Math.min(230/d,225/h),D=d*s,hp=h*s,x=40+D,y=250-hp,a=Math.atan2(hp,D),q=Math.max(10,Math.min(36,D*.7)),tn=Math.tan(a).toFixed(2),w=$('tw');
+w.setAttribute('x',x);w.setAttribute('y',y);w.setAttribute('height',275-y);
 L('hz',[40,250],[x,250]);L('vt',[x,250],[x,y]);L('ls',[40,250],[x,y]);
-$('ea').setAttribute('d',`M76 250A36 36 0 0 0 ${40+36*Math.cos(t*R)} ${250-36*Math.sin(t*R)}`);P('et',40+52*Math.cos(t*R/2),250-52*Math.sin(t*R/2)+6);
-L('dl',[x,y],[x-60,y]);$('da').setAttribute('d',`M${x-40} ${y}A40 40 0 0 0 ${x-40*Math.cos(t*R)} ${y+40*Math.sin(t*R)}`);
-$('dg').style.display=$('dp').checked?'':'none';$('dt').style.display=$('dp').checked?'':'none';P('dt',Math.max(4,x-110),y-8);
-P('dd',(40+x)/2,268);$('dd').textContent=`d = ${d} m`;P('hh2',x-8,(250+y)/2);$('hh2').textContent='h';
-$('hr').innerHTML=`tan ${t}° = h ÷ ${d} → h = ${d} × ${Math.tan(t*R).toFixed(2)} = <b>${h.toFixed(1)} m</b>`}
-['ea2','ed','dp'].forEach(i=>$(i).oninput=ht);
+$('ea').setAttribute('d',`M${40+q} 250A${q} ${q} 0 0 0 ${40+q*Math.cos(a)} ${250-q*Math.sin(a)}`);P('et',40+(q+14)*Math.cos(a/2),250-(q+14)*Math.sin(a/2)+6);
+L('dl',[x,y],[Math.max(2,x-60),y]);$('da').setAttribute('d',`M${x-q} ${y}A${q} ${q} 0 0 0 ${x-q*Math.cos(a)} ${y+q*Math.sin(a)}`);
+const z=$('dp').checked?'':'none';$('dg').style.display=z;$('dt').style.display=z;P('dt',Math.max(4,x-110),y-8);
+P('dd',(40+x)/2,268);$('dd').textContent=`d = ${fx(d)} m`;P('hh2',x-8,(250+y)/2);$('hh2').textContent=`h = ${fx(h)} m`;
+r.innerHTML=md=='h'?`tan ${fx(t)}° = h ÷ d → h = ${fx(d)} × ${tn} = <b>${fx(h)} m</b>`:md=='d'?`tan ${fx(t)}° = h ÷ d → d = ${fx(h)} ÷ ${tn} = <b>${fx(d)} m</b>`:`tan θ = h ÷ d = ${fx(h)} ÷ ${fx(d)} = ${tn} → θ = <b>${fx(t)}°</b>`}
+$('na').oninput=$('nd').oninput=$('nh').oninput=$('dp').oninput=ht;
+$('ea2').oninput=()=>{$('na').value=$('ea2').value;ht()};$('ed').oninput=()=>{$('nd').value=$('ed').value;ht()};
+$('fm2').onclick=e=>{const m=e.target.dataset.m;if(m){md=m;[...$('fm2').querySelectorAll('button')].forEach(b=>b.classList.toggle('on',b===e.target));ht()}};
 const S=[['LHS = tan θ + cot θ','Start with the messier side.'],['= sin θ/cos θ + cos θ/sin θ','Turn everything into sin and cos.'],['= (sin²θ + cos²θ) / (sin θ · cos θ)','Take the common denominator.'],['= 1 / (sin θ · cos θ)','Use sin²θ + cos²θ = 1.'],['= (1/cos θ) × (1/sin θ) = sec θ · cosec θ = RHS ✔','Split it and flip each part. Hence proved.']];let n=0;
 $('pf').innerHTML=S.map(s=>`<li><b>${s[0]}</b><small>${s[1]}</small></li>`).join('');
 const up=()=>[...$('pf').children].forEach((l,i)=>l.classList.toggle('s',i<n));
