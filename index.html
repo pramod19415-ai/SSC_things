@@ -32,14 +32,14 @@ th{color:var(--ink)}
 td button{width:100%;border:0;border-radius:0;background:transparent;padding:4px 2px;color:var(--ink)}
 td button.q{background:var(--hl);color:var(--tx)}
 .pf li{opacity:0;max-height:0;overflow:hidden;transition:.3s}
-.pf li.s{opacity:1;max-height:90px}
+.pf li.s{opacity:1;max-height:220px}
 .pf{list-style:none;padding:0;margin:8px 0}
 .pf small{display:block;color:var(--adj);line-height:20px;margin-bottom:6px}
 details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 .notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:14px}
 .notes p{background:var(--note);color:var(--nt);padding:10px 12px;margin:0;line-height:26px;box-shadow:2px 3px 0 rgba(0,0,0,.18);transform:rotate(-1.5deg)}
 .notes p:nth-child(even){transform:rotate(1.4deg)}
-.io{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0}.io label{line-height:24px}input[type=number]{font:inherit;width:100%;box-sizing:border-box;color:var(--tx);background:var(--card);border:2px solid var(--ink);border-radius:8px 4px 8px 5px;padding:2px 8px;margin-top:2px}input[readonly]{background:var(--hl);color:var(--tx);font-weight:bold}
+.io{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0}.io label{line-height:24px}input[type=number]{font:inherit;width:100%;box-sizing:border-box;color:var(--tx);background:var(--card);border:2px solid var(--ink);border-radius:8px 4px 8px 5px;padding:2px 8px;margin-top:2px}input[readonly]{background:var(--hl);color:var(--tx);font-weight:bold}select{font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--ink);border-radius:8px 4px 8px 5px;padding:2px 6px;max-width:100%}.io select{width:100%;margin-top:2px}
 @media(max-width:520px){body{font-size:18px}main{padding-left:50px}h1{font-size:46px}.io{grid-template-columns:1fr}}
 </style></head><body><main>
 <h1>Trigonometry, made easy</h1>
@@ -98,9 +98,14 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--ink)}
 <p id="hr" style="margin:6px 0 0" aria-live="polite"></p>
 <p style="margin:0">Elevation from you to the top = depression from the top to you (alternate angles). Both are measured from the <b>horizontal</b>.</p></div>
 
-<h2>6. Prove it step by step</h2>
-<div class="card"><p><b>Prove:</b> tan θ + cot θ = sec θ · cosec θ</p>
-<ol class="pf" id="pf"></ol><div class="btns"><button id="pn">Next step</button><button id="pr">Start again</button></div></div>
+<h2>6. Step-by-step solver</h2>
+<p>Pick an identity to prove, or type one ratio and let the page find all the others. Every line comes with its reason.</p>
+<div class="card"><p><b>Prove an identity:</b> <select id="ids" aria-label="Identity"></select></p>
+<ol class="pf" id="pf"></ol><div class="btns"><button id="pn">Next step</button><button id="pa">Show all</button><button id="pr">Start again</button></div>
+<label>Check it with numbers: θ = <input id="ck" type="number" min="1" max="89" step="any" value="30" inputmode="decimal" style="width:90px"> °</label><p id="cr" style="margin:6px 0 0"></p></div>
+<div class="card"><p><b>Find every ratio from one:</b></p>
+<div class="io"><label>Ratio<select id="rk"><option value="sin">sin θ</option><option value="cos">cos θ</option><option value="tan">tan θ</option></select></label><label id="l1">Opposite<input id="r1" type="number" min="0" step="any" value="5" inputmode="decimal"></label><label id="l2">Hypotenuse<input id="r2" type="number" min="0" step="any" value="13" inputmode="decimal"></label></div>
+<p id="rs" aria-live="polite" style="margin:6px 0 0"></p></div>
 
 <h2>7. Check yourself</h2>
 <div class="card">
@@ -150,13 +155,34 @@ $('ea').setAttribute('d',`M${40+q} 250A${q} ${q} 0 0 0 ${40+q*Math.cos(a)} ${250
 L('dl',[x,y],[Math.max(2,x-60),y]);$('da').setAttribute('d',`M${x-q} ${y}A${q} ${q} 0 0 0 ${x-q*Math.cos(a)} ${y+q*Math.sin(a)}`);
 const z=$('dp').checked?'':'none';$('dg').style.display=z;$('dt').style.display=z;P('dt',Math.max(4,x-110),y-8);
 P('dd',(40+x)/2,268);$('dd').textContent=`d = ${fx(d)} m`;P('hh2',x-8,(250+y)/2);$('hh2').textContent=`h = ${fx(h)} m`;
-r.innerHTML=md=='h'?`tan ${fx(t)}° = h ÷ d → h = ${fx(d)} × ${tn} = <b>${fx(h)} m</b>`:md=='d'?`tan ${fx(t)}° = h ÷ d → d = ${fx(h)} ÷ ${tn} = <b>${fx(d)} m</b>`:`tan θ = h ÷ d = ${fx(h)} ÷ ${fx(d)} = ${tn} → θ = <b>${fx(t)}°</b>`}
+const ex={30:'1/√3 = ',60:'√3 = '}[fx(t)]||'',tx=ex+tn,J=l=>l.map(x=>`<b>${x[0]}:</b> ${x[1]}`).join('<br>'),F=['Formula','h is opposite and d is adjacent, so tan θ = h ÷ d'];
+r.innerHTML=J(md=='h'?[['Given',`θ = ${fx(t)}°, d = ${fx(d)} m. Find h.`],F,['Substitute',`tan ${fx(t)}° = h ÷ ${fx(d)}`],['Solve',`h = ${fx(d)} × tan ${fx(t)}° = ${fx(d)} × ${tx}`],['Answer',`h = <b>${fx(h)} m</b>`]]:md=='d'?[['Given',`θ = ${fx(t)}°, h = ${fx(h)} m. Find d.`],F,['Substitute',`tan ${fx(t)}° = ${fx(h)} ÷ d`],['Solve',`d = ${fx(h)} ÷ tan ${fx(t)}° = ${fx(h)} ÷ ${tx}`],['Answer',`d = <b>${fx(d)} m</b>`]]:[['Given',`h = ${fx(h)} m, d = ${fx(d)} m. Find θ.`],F,['Substitute',`tan θ = ${fx(h)} ÷ ${fx(d)}`],['Solve',`tan θ = ${tn}, so θ = tan⁻¹(${tn})`],['Answer',`θ = <b>${fx(t)}°</b>`]])}
 $('na').oninput=$('nd').oninput=$('nh').oninput=$('dp').oninput=ht;
 $('ea2').oninput=()=>{$('na').value=$('ea2').value;ht()};$('ed').oninput=()=>{$('nd').value=$('ed').value;ht()};
 $('fm2').onclick=e=>{const m=e.target.dataset.m;if(m){md=m;[...$('fm2').querySelectorAll('button')].forEach(b=>b.classList.toggle('on',b===e.target));ht()}};
-const S=[['LHS = tan θ + cot θ','Start with the messier side.'],['= sin θ/cos θ + cos θ/sin θ','Turn everything into sin and cos.'],['= (sin²θ + cos²θ) / (sin θ · cos θ)','Take the common denominator.'],['= 1 / (sin θ · cos θ)','Use sin²θ + cos²θ = 1.'],['= (1/cos θ) × (1/sin θ) = sec θ · cosec θ = RHS ✔','Split it and flip each part. Hence proved.']];let n=0;
+let S=[['LHS = tan θ + cot θ','Start with the messier side.'],['= sin θ/cos θ + cos θ/sin θ','Turn everything into sin and cos.'],['= (sin²θ + cos²θ) / (sin θ · cos θ)','Take the common denominator.'],['= 1 / (sin θ · cos θ)','Use sin²θ + cos²θ = 1.'],['= (1/cos θ) × (1/sin θ) = sec θ · cosec θ = RHS ✔','Split it and flip each part. Hence proved.']];let n=0;
 $('pf').innerHTML=S.map(s=>`<li><b>${s[0]}</b><small>${s[1]}</small></li>`).join('');
 const up=()=>[...$('pf').children].forEach((l,i)=>l.classList.toggle('s',i<n));
-$('pn').onclick=()=>{n=Math.min(5,n+1);up()};$('pr').onclick=()=>{n=0;up()};
-tri();ht();n=1;up();
+$('pn').onclick=()=>{n=Math.min(S.length,n+1);up()};$('pr').onclick=()=>{n=0;up()};
+const sn=t=>Math.sin(t*R),cs=t=>Math.cos(t*R);
+const IDS=[{n:'tan θ + cot θ = sec θ · cosec θ',s:S,f:t=>{const s=sn(t),c=cs(t);return[s/c+c/s,1/c/s]}},
+{n:'(1 − cos²θ)(1 + cot²θ) = 1',s:[['LHS = (1 − cos²θ)(1 + cot²θ)','Start with the LHS.'],['= sin²θ × cosec²θ','1 − cos²θ = sin²θ and 1 + cot²θ = cosec²θ (identities).'],['= sin²θ × 1/sin²θ','cosec θ = 1/sin θ.'],['= 1 = RHS ✔','Cancel. Hence proved.']],f:t=>{const s=sn(t),c=cs(t);return[(1-c*c)*(1+c*c/s/s),1]}},
+{n:'sec θ − cos θ = sin θ · tan θ',s:[['LHS = sec θ − cos θ','Start with the LHS.'],['= 1/cos θ − cos θ','sec θ = 1/cos θ.'],['= (1 − cos²θ)/cos θ','Common denominator.'],['= sin²θ/cos θ','1 − cos²θ = sin²θ.'],['= sin θ × (sin θ/cos θ) = sin θ · tan θ = RHS ✔','Split it. Hence proved.']],f:t=>{const s=sn(t),c=cs(t);return[1/c-c,s*s/c]}},
+{n:'(sin θ + cos θ)² + (sin θ − cos θ)² = 2',s:[['LHS = (sin θ + cos θ)² + (sin θ − cos θ)²','Start with the LHS.'],['= sin²θ + 2 sin θ cos θ + cos²θ + sin²θ − 2 sin θ cos θ + cos²θ','Expand with (a ± b)².'],['= 2 sin²θ + 2 cos²θ','The middle terms cancel.'],['= 2(sin²θ + cos²θ) = 2 × 1 = 2 = RHS ✔','Take 2 common and use the identity.']],f:t=>{const s=sn(t),c=cs(t);return[(s+c)**2+(s-c)**2,2]}},
+{n:'sin θ/(1 + cos θ) + (1 + cos θ)/sin θ = 2 cosec θ',s:[['LHS = sin θ/(1 + cos θ) + (1 + cos θ)/sin θ','Start with the LHS.'],['= (sin²θ + (1 + cos θ)²) / (sin θ (1 + cos θ))','Common denominator.'],['= (sin²θ + 1 + 2cos θ + cos²θ) / (sin θ (1 + cos θ))','Expand (1 + cos θ)².'],['= (2 + 2cos θ) / (sin θ (1 + cos θ))','sin²θ + cos²θ = 1, so the top becomes 1 + 1 + 2cos θ.'],['= 2(1 + cos θ) / (sin θ (1 + cos θ)) = 2/sin θ = 2 cosec θ = RHS ✔','Cancel (1 + cos θ). Hence proved.']],f:t=>{const s=sn(t),c=cs(t);return[s/(1+c)+(1+c)/s,2/s]}}];
+function chk(){const k=IDS[+$('ids').value],t=+$('ck').value;if(!(t>0&&t<90)){$('cr').textContent='Enter an angle between 0° and 90°.';return}const[a,b]=k.f(t);$('cr').innerHTML=`At θ = ${fx(t)}°: LHS = <b>${a.toFixed(3)}</b> and RHS = <b>${b.toFixed(3)}</b> ${Math.abs(a-b)<1e-9?'✔ equal':'✘ not equal'}`}
+function lp(i){S=IDS[i].s;$('pf').innerHTML=S.map(s=>`<li><b>${s[0]}</b><small>${s[1]}</small></li>`).join('');n=1;up();chk()}
+$('ids').innerHTML=IDS.map((k,i)=>`<option value="${i}">${k.n}</option>`).join('');
+$('ids').onchange=()=>lp(+$('ids').value);$('ck').oninput=chk;$('pa').onclick=()=>{n=S.length;up()};
+const RN={sin:['Opposite','Hypotenuse'],cos:['Adjacent','Hypotenuse'],tan:['Opposite','Adjacent']},sq=v=>{const r=Math.sqrt(v);return Math.abs(r-Math.round(r))<1e-9?[''+Math.round(r),r]:['√'+fx(v),r]};
+function fr(){const k=$('rk').value,a=+$('r1').value,b=+$('r2').value,nm=RN[k],o=$('rs'),n0=nm[0].toLowerCase(),n1=nm[1].toLowerCase();$('l1').firstChild.textContent=nm[0];$('l2').firstChild.textContent=nm[1];
+if(!(a>0&&b>0)||(k!='tan'&&a>=b)){o.textContent=k=='tan'?'Enter two values above 0.':'Enter two values above 0, with the hypotenuse larger than the other side.';return}
+let O,A,H,st;
+if(k=='sin'){O=[fx(a),a];H=[fx(b),b];const v=b*b-a*a;A=sq(v);st=`adjacent² = ${fx(b)}² − ${fx(a)}² = ${fx(v)}, so adjacent = <b>${A[0]}</b>`}
+else if(k=='cos'){A=[fx(a),a];H=[fx(b),b];const v=b*b-a*a;O=sq(v);st=`opposite² = ${fx(b)}² − ${fx(a)}² = ${fx(v)}, so opposite = <b>${O[0]}</b>`}
+else{O=[fx(a),a];A=[fx(b),b];const v=a*a+b*b;H=sq(v);st=`hypotenuse² = ${fx(a)}² + ${fx(b)}² = ${fx(v)}, so hypotenuse = <b>${H[0]}</b>`}
+const q=(x,y)=>`${x[0]}/${y[0]} = ${(x[1]/y[1]).toFixed(3)}`;
+o.innerHTML=`<b>Given:</b> ${k} θ = ${n0} ÷ ${n1} = ${fx(a)}/${fx(b)}<br><b>Draw:</b> a right-angled triangle with ${n0} = ${fx(a)} and ${n1} = ${fx(b)}<br><b>Third side (Pythagoras):</b> ${st}<br><b>All six ratios:</b><br>sin θ = opp/hyp = ${q(O,H)}<br>cos θ = adj/hyp = ${q(A,H)}<br>tan θ = opp/adj = ${q(O,A)}<br>cosec θ = hyp/opp = ${q(H,O)}<br>sec θ = hyp/adj = ${q(H,A)}<br>cot θ = adj/opp = ${q(A,O)}<br><b>Angle:</b> θ ≈ ${fx(Math.atan2(O[1],A[1])/R)}°`}
+$('rk').onchange=()=>{[$('r1').value,$('r2').value]=({sin:[5,13],cos:[12,13],tan:[5,12]})[$('rk').value];fr()};$('r1').oninput=fr;$('r2').oninput=fr;
+tri();ht();lp(0);fr();
 </script></body></html>
